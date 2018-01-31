@@ -19,7 +19,7 @@ import textBox from "./TextBox";
 export default {
   name: "Main",
   computed: {
-    sections() {
+    sections () {
       return 3;
     }
   },
