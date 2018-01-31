@@ -8,28 +8,13 @@
     </div>
   </div>
 </template>
+
 <script>
+import ScrollMagic from 'ScrollMagic'
+import ScrollTo from 'ScrollTo'
+
 export default {
   name: "Nav",
-  mounted () {
-    let anchorSquares = document.querySelectorAll('.anchorElem')
-    let self = this
-    Array.prototype.forEach.call(anchorSquares, function (anchor) {
-      anchor.addEventListener('click', self.clickHandler, false)
-    })
-  },
-  methods: {
-    clickHandler (e) {
-      document.querySelector('.activeAnchor').classList.remove('activeAnchor')
-      e.target.classList.add('activeAnchor')
-      let offset = document.querySelector(e.target.hash).offsetTop * 2
-      window.scrollTo({
-        'top': offset,
-        'left': 0,
-        'behavior': 'smooth'
-      })
-    }
-  }
 };
 </script>
 <style lang="sass-loader">

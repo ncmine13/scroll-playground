@@ -15,43 +15,12 @@
 
 <script>
 import textBox from "./TextBox";
-import ScrollMagic from 'ScrollMagic'
 
 export default {
   name: "Main",
-    mounted () {
-    // document.addEventListener('scroll', _.throttle(this.scrollHandler, 30), false);
-    var vpHeight = window.innerHeight,
-    controller = new ScrollMagic.Controller()
-    let self = this
-    var duration = window.innerHeight
-    var pinElem = document.querySelector('.scene-wrapper')
-    let offsets = [0, vpHeight * 2, vpHeight * 4, vpHeight * 6]
-    for (var i = 0; i < this.mainSections.length; i++) {
-      setScene(i)
-    }
-    function setScene(i) {
-      new ScrollMagic.Scene({
-        triggerHook: 0,
-        duration: vpHeight,
-        offset: offsets[i]
-      })
-      .setPin(pinElem)
-      .addIndicators()
-      .addTo(controller)
-    }
-  },
-  data () {
-    return {
-      sectionIDs: [],
-    }
-  },
   computed: {
     sections() {
       return 3;
-    },
-    mainSections () {
-      return document.querySelectorAll(".section")
     }
   },
   methods: {
