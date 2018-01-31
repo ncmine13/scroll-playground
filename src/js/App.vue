@@ -56,28 +56,19 @@ export default {
       })
     },
     activateSection (direction, pageOffset) {
-      if ( direction === 'FORWARD') {
-        // active section is the one closest to and less than this number
-        if (pageOffset <= this.offsets[1]) {
-          console.log('active is 1')
-        } else if (pageOffset >= this.offsets[1] && pageOffset <= this.offsets[2]) {
-          console.log('active is 2!')
-        } else if (pageOffset >= this.offsets[2] && pageOffset <= this.offsets[3]) {
-          console.log('active is 3!')
-        } else if (pageOffset >= this.offsets[3]) {
-          console.log('active is 4!')
-        }
-      } else if (direction === 'REVERSE') {
-        if (pageOffset <= this.offsets[1]) {
-          console.log('active is 1')
-        } else if (pageOffset >= this.offsets[1] && pageOffset <= this.offsets[2]) {
-          console.log('active is 2!')
-        } else if (pageOffset >= this.offsets[2] && pageOffset <= this.offsets[3]) {
-          console.log('active is 3!')
-        } else if (pageOffset >= this.offsets[4]) {
-          console.log('active is 4!')
+      let self = this
+      for (var i = 0; i < 4; i++) {
+        if (pageOffset >= self.offsets[i] && pageOffset < self.offsets[i + 1]) {
+          this.activeSection = '#section' + (i + 1)
+          break
+        } else if (pageOffset >= self.offsets[3]) {
+          this.activeSection = '#section' + 4
+          break
         }
       }
+      document.querySelector('a')
+      let anchor = "a[href='" + this.activeSection + "']"
+      this.handleAnchorUI(document.querySelector(anchor))
     },
     addAnchorHandler () {
       let self = this
@@ -100,7 +91,6 @@ export default {
       .addTo(self.controller)
     },
     handleAnchorUI (elem) {
-      // change the corresponding anchor square color when navigating
       document.querySelector('.activeAnchor').classList.remove('activeAnchor')
       elem.classList.add('activeAnchor')
     },

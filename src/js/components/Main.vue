@@ -2,7 +2,7 @@
   <div class="main-wrapper">
     <div class="scene-wrapper">
       <div class="hero__screen"></div>
-      <div :id="'section' +( index + 1)" class="bgImg section" v-for="(section, index) in sections" :key="section.id" :style="'background-image: url(' + bgImage(index) + ');'">
+      <div :id="'section' + ( index + 1)" class="bgImg section" v-for="(section, index) in sections" :key="section.id" :style="'background-image: url(' + bgImage(index) + ');'">
         <text-box></text-box>
       </div>
       <div id="section4" class="bgImg section" :style="'background-image: url(' + bgImage(3) + ');'">
