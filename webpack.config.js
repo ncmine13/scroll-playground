@@ -4,7 +4,7 @@ module.exports = {
   entry: './src/js/main.js',
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
   },
   output: {
     filename: '[name].bundle.js',
@@ -14,6 +14,11 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
+      "TweenMax": path.resolve('node_modules', 'gsap/src/uncompressed/TweenMax.js'),
+      "TimelineMax": path.resolve('node_modules', 'gsap/src/uncompressed/TimelineMax.js'),
+      "ScrollMagic": path.resolve('node_modules', 'scrollmagic/scrollmagic/uncompressed/ScrollMagic.js'),
+      "animation.gsap": path.resolve('node_modules', 'scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js'),
+      "debug.addIndicators": path.resolve('node_modules', 'scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js')
     }
   },
   module: {
@@ -38,7 +43,7 @@ module.exports = {
           loader: "sass-loader",
           options: {
             sourceMap: true
-        }
+          }
         }]
       },
       {
@@ -65,5 +70,5 @@ module.exports = {
       }
     ]
   },
-  target: "web",
+  target: "web"
 };

@@ -7,14 +7,15 @@
   right: 0;
   left: 0;
   height: 300vh;
+  z-index: 1;
   &--last {
     background-color: rgba(129, 32, 139, 0.5);
     position: absolute;
     width: 100%;
-    top: 300vh;
     bottom: 0;
     right: 0;
     left: 0;
+    z-index: 1;
     height: 100vh;
   }
 }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/js/main.js",
   "scripts": {
-    "start": "webpack-dev-server --open webpack",
+    "start": "webpack-dev-server --hot",
     "build": "webpack"
   },
   "author": "naomi",
@@ -28,7 +28,10 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
+    "gsap": "^1.20.3",
     "lodash": "^4.17.4",
+    "scrollmagic": "^2.0.5",
+    "smoothscroll-polyfill": "^0.4.0",
     "vue": "^2.5.13"
   }
 }
