@@ -1,0 +1,20 @@
+.hero__screen {
+  background-color: rgba(48, 49, 51, 0.5);
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 300vh;
+  &--last {
+    background-color: rgba(129, 32, 139, 0.5);
+    position: absolute;
+    width: 100%;
+    top: 300vh;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 100vh;
+  }
+}

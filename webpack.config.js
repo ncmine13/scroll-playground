@@ -1,0 +1,69 @@
+const path = require('path');
+
+module.exports = {
+  entry: './src/js/main.js',
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: './dist'
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+    }
+  },
+  module: {
+    rules: [
+      {
+        test: /source\/javascripts\/.*\.js$/,
+        exclude: /node_modules|\.tmp|vendor/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'stage-0', 'env']
+        }
+      },
+      {
+        test: /\.scss$/,
+        use: [{
+          loader: "style-loader"
+        },
+        {
+          loader: "css-loader"
+        },
+        {
+          loader: "sass-loader",
+          options: {
+            sourceMap: true
+        }
+        }]
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            scss: 'vue-style-loader!css-loader!sass-loader',
+            sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+          }
+        }
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader'
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'file-loader'
+        ]
+      }
+    ]
+  },
+  target: "web",
+};
