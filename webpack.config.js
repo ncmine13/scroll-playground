@@ -59,9 +59,11 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader'
-        ]
+        loader: 'file-loader',
+        options: {
+          name: './static/img/[name].[hash:7].[ext]',
+          path: '/dist/static/img/[name].[hash:7].[ext]'
+        }
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
