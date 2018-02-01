@@ -50,8 +50,7 @@ export default {
     }
   },
   methods: {
-// initial calculations
-
+// initial calculations and scroll scene initiation
     calculateOffsets () {
       let self = this
       Array.prototype.forEach.call(self.sections, function(section){
@@ -73,12 +72,8 @@ export default {
         offset: self.offsets[iterator]
       })
       .setPin(self.pinElem)
-      .on('add', function(e) {
-        console.log(e)
-      })
       .on('start', function (e) {
         if (e.state != 'AFTER') {
-          console.log(e.scrollDirection, e.state, this)
           self.activateSection(e.scrollDirection, window.pageYOffset)
         }
       })
@@ -89,9 +84,7 @@ export default {
       .addTo(self.controller)
     },
 
-
-// handlers on enter and leave of scrollMagic
-
+// handlers on enter and leave of scrollMagic scene
     activateSection (direction, pageOffset) {
       let self = this
       for (var i = 0; i < 4; i++) {
@@ -155,9 +148,6 @@ export default {
         self.click = false
       }, 500)
     }
-
-
-
   },
   components: {
       mainComponent,
