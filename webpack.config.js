@@ -62,7 +62,7 @@ module.exports = {
         loader: 'file-loader',
         options: {
           name: './static/img/[name].[hash:7].[ext]',
-          path: '/dist/static/img/[name].[hash:7].[ext]'
+          path: '/static/img/[name].[hash:7].[ext]'
         }
       },
       {
