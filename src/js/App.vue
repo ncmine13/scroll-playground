@@ -17,6 +17,7 @@ import ScrollTo from 'ScrollTo'
 export default {
   name: 'App',
   mounted () {
+    console.log('MOUNTED')
     this.calculateOffsets()
     for (var i = 0; i < this.sections.length; i++) {
       this.initializeScene(i)
@@ -27,7 +28,8 @@ export default {
     return {
       offsets: [],
       counter: 0,
-      activeSection: ''
+      activeSection: '#section1',
+      click: false
     }
   },
   computed: {
@@ -55,7 +57,7 @@ export default {
         self.counter+=2
       })
     },
-    activateSection (direction, pageOffset) {
+    activateSection (direction, pageOffset, event) {
       let self = this
       for (var i = 0; i < 4; i++) {
         if (pageOffset >= self.offsets[i] && pageOffset < self.offsets[i + 1]) {
@@ -76,6 +78,20 @@ export default {
         anchor.addEventListener('click', self.anchorHandler, false)
       })
     },
+    handleLeave (direction) {
+      if (!this.click) {
+        let active = direction === 'FORWARD' ? parseInt(this.activeSection.slice(-1)) + 1 : parseInt(this.activeSection.slice(-1))
+        if (active <= this.sections.length) {
+          let elem = "#section" + active
+          let sectionOffset = direction === 'FORWARD' ? document.querySelector(elem).offsetTop * 2 : document.querySelector(elem).offsetTop * 2 + (this.vpHeight / 2)
+          window.scrollTo({
+            'top': sectionOffset,
+            'left': 0,
+            'behavior': 'smooth'
+          })
+        }
+      }
+    },
     initializeScene (iterator) {
       let self = this
       new ScrollMagic.Scene({
@@ -85,7 +101,10 @@ export default {
       })
       .setPin(self.pinElem)
       .on('start', function (e) {
-        self.activateSection(e.scrollDirection, window.pageYOffset)
+        self.activateSection(e.scrollDirection, window.pageYOffset, 'start')
+      })
+      .on('leave', function(e){
+        self.handleLeave(e.scrollDirection)
       })
       .addIndicators()
       .addTo(self.controller)
@@ -95,13 +114,17 @@ export default {
       elem.classList.add('activeAnchor')
     },
     anchorHandler (e) {
-      this.handleAnchorUI(e.target)
       let offset = document.querySelector(e.target.hash).offsetTop * 2
+      this.click = true
+      var self = this
       window.scrollTo({
         'top': offset,
         'left': 0,
         'behavior': 'smooth'
       })
+      window.setTimeout(function() {
+        self.click = false
+      }, 500)
     }
   },
   components: {

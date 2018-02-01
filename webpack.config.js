@@ -63,7 +63,7 @@ module.exports = {
         options: {
           name: './static/img/[name].[hash:7].[ext]',
           path: '/static/img/[name].[hash:7].[ext]',
-          publicPath: './dist/'
+          // publicPath: './dist/'
         }
       },
       {
