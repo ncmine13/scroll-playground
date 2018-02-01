@@ -1,7 +1,7 @@
 <template>
   <div class="side-nav__wrapper">
     <div class="side-nav__anchor-squares">
-      <a class="anchorElem activeAnchor" href="#section1"></a>
+      <a class="anchorElem" href="#section1"></a>
       <a class="anchorElem" href="#section2"></a>
       <a class="anchorElem" href="#section3"></a>
       <a class="anchorElem" href="#section4"></a>

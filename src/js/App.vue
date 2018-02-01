@@ -17,19 +17,19 @@ import ScrollTo from 'ScrollTo'
 export default {
   name: 'App',
   mounted () {
-    console.log('MOUNTED')
     this.calculateOffsets()
+    this.addAnchorHandler()
     for (var i = 0; i < this.sections.length; i++) {
       this.initializeScene(i)
     }
-    this.addAnchorHandler()
   },
   data () {
     return {
       offsets: [],
       counter: 0,
-      activeSection: '#section1',
-      click: false
+      activeSection: '',
+      click: false,
+      isAnchorActive: false
     }
   },
   computed: {
@@ -50,6 +50,8 @@ export default {
     }
   },
   methods: {
+// initial calculations
+
     calculateOffsets () {
       let self = this
       Array.prototype.forEach.call(self.sections, function(section){
@@ -57,7 +59,40 @@ export default {
         self.counter+=2
       })
     },
-    activateSection (direction, pageOffset, event) {
+    addAnchorHandler () {
+      let self = this
+      Array.prototype.forEach.call(self.anchorSquares, function (anchor) {
+        anchor.addEventListener('click', self.handleAnchorNavigation, false)
+      })
+    },
+    initializeScene (iterator) {
+      let self = this
+      var scene = new ScrollMagic.Scene({
+        triggerHook: 0,
+        duration: self.vpHeight,
+        offset: self.offsets[iterator]
+      })
+      .setPin(self.pinElem)
+      .on('add', function(e) {
+        console.log(e)
+      })
+      .on('start', function (e) {
+        if (e.state != 'AFTER') {
+          console.log(e.scrollDirection, e.state, this)
+          self.activateSection(e.scrollDirection, window.pageYOffset)
+        }
+      })
+      .on('leave', function(e) {
+        self.handleLeave(e.scrollDirection)
+      })
+      .addIndicators()
+      .addTo(self.controller)
+    },
+
+
+// handlers on enter and leave of scrollMagic
+
+    activateSection (direction, pageOffset) {
       let self = this
       for (var i = 0; i < 4; i++) {
         if (pageOffset >= self.offsets[i] && pageOffset < self.offsets[i + 1]) {
@@ -68,21 +103,22 @@ export default {
           break
         }
       }
-      document.querySelector('a')
-      let anchor = "a[href='" + this.activeSection + "']"
-      this.handleAnchorUI(document.querySelector(anchor))
-    },
-    addAnchorHandler () {
-      let self = this
-      Array.prototype.forEach.call(self.anchorSquares, function (anchor) {
-        anchor.addEventListener('click', self.anchorHandler, false)
-      })
+      if (!this.isAnchorActive) {
+        this.activateAnchor(this.activeSection)
+        this.isAnchorActive = true
+      }
+      if (direction === 'REVERSE') {
+        this.activateAnchor(this.activeSection)
+      }
     },
     handleLeave (direction) {
+      let active = direction === 'FORWARD' ? parseInt(this.activeSection.slice(-1)) + 1 : parseInt(this.activeSection.slice(-1))
+      let elem = "#section" + active
+      if (direction === 'FORWARD' && active <= this.sections.length) {
+        this.activateAnchor(elem)
+      }
       if (!this.click) {
-        let active = direction === 'FORWARD' ? parseInt(this.activeSection.slice(-1)) + 1 : parseInt(this.activeSection.slice(-1))
         if (active <= this.sections.length) {
-          let elem = "#section" + active
           let sectionOffset = direction === 'FORWARD' ? document.querySelector(elem).offsetTop * 2 : document.querySelector(elem).offsetTop * 2 + (this.vpHeight / 2)
           window.scrollTo({
             'top': sectionOffset,
@@ -92,28 +128,21 @@ export default {
         }
       }
     },
-    initializeScene (iterator) {
-      let self = this
-      new ScrollMagic.Scene({
-        triggerHook: 0,
-        duration: self.vpHeight,
-        offset: self.offsets[iterator]
-      })
-      .setPin(self.pinElem)
-      .on('start', function (e) {
-        self.activateSection(e.scrollDirection, window.pageYOffset, 'start')
-      })
-      .on('leave', function(e){
-        self.handleLeave(e.scrollDirection)
-      })
-      .addIndicators()
-      .addTo(self.controller)
+
+// anchor nav functionality and UI
+
+    activateAnchor (section) {
+      document.querySelector('a')
+      let anchor = "a[href='" + section + "']"
+      this.handleAnchorUI(document.querySelector(anchor))
     },
     handleAnchorUI (elem) {
-      document.querySelector('.activeAnchor').classList.remove('activeAnchor')
+      if (document.querySelector('.activeAnchor')) {
+        document.querySelector('.activeAnchor').classList.remove('activeAnchor')
+      }
       elem.classList.add('activeAnchor')
     },
-    anchorHandler (e) {
+    handleAnchorNavigation (e) {
       let offset = document.querySelector(e.target.hash).offsetTop * 2
       this.click = true
       var self = this
@@ -126,6 +155,9 @@ export default {
         self.click = false
       }, 500)
     }
+
+
+
   },
   components: {
       mainComponent,
